@@ -1,5 +1,6 @@
 var Discord = require("discord.js")
 var bot = new Discord.Client ();
+var AuthDetails = require("./auth.json");
 
 bot.on("message", function(message)
 {
@@ -49,5 +50,4 @@ bot.on("message", function(message)
 	}
 });
 
-bot.login("discordBotEmail", "discordBotPassword");
-//bot.loginWithToken(token,email,password,callback);
+bot.login(AuthDetails.email, AuthDetails.password);
