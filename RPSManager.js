@@ -1,7 +1,7 @@
 var CHOICE = {
     ROCK: "Rock",
     PAPER: "Paper",
-    SCISSORS: "Scissors" 
+    SCISSORS: "Scissors"
 };
 
 //Battle Manager
@@ -17,13 +17,13 @@ var BattleManager = function (bot) {
         if (message.channel.isPrivate &&
             !message.author.equals(bot.user)
             && (message.author.equals(_playerOne.user) || message.author.equals(_playerTwo.user))) {
-            
+
             parseDirectMessage(message);
         } else {
             parsePublicMessage(message);
         }
     }
-    
+
     this.isBattleOn = function () {
         return _isBattleOn;
     }
@@ -42,7 +42,7 @@ var BattleManager = function (bot) {
         if (_playerOne.choice && _playerTwo.choice) {
 
             var winningPlayer = determineWinner(_playerOne, _playerTwo);
-            
+
             var victoryString = null;
             if (winningPlayer) {
                 victoryString = winningPlayer.user.username.toUpperCase() + " WINS!";
@@ -57,9 +57,9 @@ var BattleManager = function (bot) {
             winningPlayer = null;
         }
     }
-        
+
     function parsePublicMessage(message) {
-               
+
         // Begin Command
         if (message.content.includes("begin")) {
             _battleChannel = message.channel;

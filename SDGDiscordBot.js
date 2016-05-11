@@ -1,20 +1,20 @@
 //Note: the .js is not required as Node assumes these files are javascript
+//node modules to include
 var Discord = require("discord.js")
-var RPSManager = require("./RPSManager.js")
 var winston = require('winston')
-
+//bot modules
+var RPSManager = require("./RPSManager.js")
+var rpsManager = new RPSManager(bot);
+var cenaModule = require("./cenaModule.js")
+//initial bot setup
+var bot = new Discord.Client({autoReconnect: true});
+var AuthDetails = require("./auth.json");
+var botVersion = "0.5";
+var botStartTime = new Date();
 //These three required for the fs.readdirSync()
 var fs = require( "fs" );
 var path = require( "path" );
 var process = require( "process" );
-
-var bot = new Discord.Client({autoReconnect: true});
-var rpsManager = new RPSManager(bot);
-var AuthDetails = require("./auth.json");
-
-var botVersion = "0.5";
-
-var botStartTime = new Date();
 
 //---------------------------- WINSTON ----------------------------||
 winston.add( //add transport (console is default)
@@ -30,11 +30,6 @@ winston.add( //add transport (console is default)
 	}
 )
 //-------------------------WINSTON  ENDSTON------------------------||
-
-var cenaImageFolder = "./cenaImages/";
-
-var cenaImageArray = new Array();
-cenaImageArray = fs.readdirSync(cenaImageFolder);//Loops through a given folder and creates an array of file names
 
 //Table catcher object constructor
 function TableCatcher(channel){
@@ -56,6 +51,7 @@ bot.on("ready", function(){
 
 bot.on("message", function(message)
 {
+	//don't listen for self messages
 	if (message.author.id == bot.user.id){
 		return;
 	}
@@ -70,6 +66,7 @@ bot.on("message", function(message)
 		"battle begin *@player1* *@player2*");
 	}
 
+	//about
 	if(message.content.includes("!about")){
 		bot.reply(message, "ShameBot Version " + botVersion + "\r" +
 		"Stack: Discord.js, Node.js, Ubuntu, Digital Ocean, GitHub, and pm2.\r" +
@@ -96,18 +93,8 @@ bot.on("message", function(message)
 	//John Cena
 	if(lowerCaseMessage.includes("and his name is") ||
 		lowerCaseMessage.includes("and his name was") ||
-		message.content.includes("\uD83C\uDFBA") &&
-		!message.author.equals(bot.user)){ //Unicode trumpet
-
-		//Reply message
-		bot.reply(message, "\uD83C\uDFBA\uD83C\uDFBA\uD83C\uDFBA\uD83C\uDFBA**JOHN CENA!**\uD83C\uDFBA\uD83C\uDFBA\uD83C\uDFBA\uD83C\uDFBA");
-		//Get random image path from array
-		var randomCenaImageFilePath = cenaImageArray[Math.floor(Math.random() * cenaImageArray.length)];
-		//Reply with random cena image
-		bot.sendFile(message.channel, cenaImageFolder.concat(randomCenaImageFilePath),"jonny.png", (err, message) => {
-			if(err)
-				winston.error("couldn't send image:", err);
-		})
+		message.content.includes("\uD83C\uDFBA")){
+			cenaModule(bot, message);
 	}
 
 	//Table Catcher
@@ -192,7 +179,7 @@ bot.on("message", function(message)
 		});
 	}
 
-    // Rock, Paper, Scissors
+  // Rock, Paper, Scissors
 	if (message.content.substring(0, 7) == "!battle") {
 	    rpsManager.parseCommand(message);
 	}
