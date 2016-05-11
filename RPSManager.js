@@ -30,6 +30,11 @@ var BattleManager = function (bot) {
 
     function parseDirectMessage(message) {
 
+        // If the message author is the bot itself, ignore it and return
+        if (message.author == bot.user) {
+          return;
+        }
+
         //Assign the Choice to Appropriate Player
         var activePlayer = messageAuthorToPlayer(message.author);
         if (assignChoiceToPlayer(activePlayer, message.content.toLowerCase())) {
@@ -72,13 +77,20 @@ var BattleManager = function (bot) {
             } else {
                 _playerOne = new Player(message.mentions[0]);
                 _playerTwo = new Player(message.mentions[1]);
-                _players = [_playerOne, _playerTwo];
 
+                // If playerOne is a bot, assign a random choice
+                if (_playerOne.user.equals(bot.user)) {
+                  _playerOne.choice = randomChoice();
+                }
+
+                // If playerTwo is a bot, assign a random choice
+                if (_playerTwo.user.equals(bot.user)) {
+                  _playerTwo.choice = randomChoice();
+                }
+
+                // Verify it's a valid game to start
                 if (_isBattleOn) {
                     bot.sendMessage(_battleChannel, "**Error:** No more than one active battle at a time");
-                    validStart = false;
-                } else if (_playerOne.user.equals(bot.user) || _playerTwo.user.equals(bot.user)) {
-                    bot.sendMessage(_battleChannel, "**Error:** The bot can't be one of the players (yet).");
                     validStart = false;
                 } else if (_playerOne.user.equals(_playerTwo.user)) {
                     bot.sendMessage(this.battleChannel, "**Error:** Both players must be unique");
@@ -98,6 +110,24 @@ var BattleManager = function (bot) {
                _playerTwo = null;
             }
         }
+    }
+
+    function randomChoice () {
+      var randomInt = Math.floor(Math.random() * (2 - 0 + 1)) + 0;
+      switch(randomInt) {
+        case 0:
+          return CHOICE.ROCK;
+          break;
+        case 1:
+          return CHOICE.PAPER;
+          break;
+        case 2:
+          return CHOICE.SCISSORS;
+          break;
+        default:
+          return CHOICE.ROCK;
+          break;
+      }
     }
 
     function assignChoiceToPlayer(player, choice) {

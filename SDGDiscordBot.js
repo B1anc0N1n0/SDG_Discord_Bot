@@ -4,7 +4,6 @@ var Discord = require("discord.js")
 var winston = require('winston')
 //bot modules
 var RPSManager = require("./RPSManager.js")
-var rpsManager = new RPSManager(bot);
 var cenaModule = require("./cenaModule.js")
 //initial bot setup
 var bot = new Discord.Client({autoReconnect: true});
@@ -15,6 +14,8 @@ var botStartTime = new Date();
 var fs = require( "fs" );
 var path = require( "path" );
 var process = require( "process" );
+
+var rpsManager = new RPSManager(bot);
 
 //---------------------------- WINSTON ----------------------------||
 winston.add( //add transport (console is default)
