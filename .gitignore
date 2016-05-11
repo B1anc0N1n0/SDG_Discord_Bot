@@ -49,3 +49,6 @@ Temporary Items
 # Node JS Modules
 node_modules
 auth.json
+
+# Log File Directory
+logs
