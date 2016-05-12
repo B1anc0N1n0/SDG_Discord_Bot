@@ -78,6 +78,8 @@ var BattleManager = function (bot) {
                 _playerOne = new Player(message.mentions[0]);
                 _playerTwo = new Player(message.mentions[1]);
 
+                _players = [_playerOne, _playerTwo];
+
                 // If playerOne is a bot, assign a random choice
                 if (_playerOne.user.equals(bot.user)) {
                   _playerOne.choice = randomChoice();
