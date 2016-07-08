@@ -1,3 +1,5 @@
+var winston = require('winston');
+
 //Table catcher object constructor
 var tableCatcherArray = new Array(); //Keeps all TableCatcher objects
 

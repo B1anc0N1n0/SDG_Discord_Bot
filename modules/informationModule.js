@@ -1,5 +1,6 @@
 var botVersion = "0.5";
 var botStartTime = new Date();
+var winston = require('winston');
 
 var InfoManager = function (bot){
   this.help = function (message){
@@ -27,7 +28,7 @@ var InfoManager = function (bot){
     var serverNames = [];
     var channelNames = [];
     var userNames = [];
-    
+
     bot.reply(message, "I've sent you a private message containing your request results.");
 
     bot.servers.forEach(function(server) {

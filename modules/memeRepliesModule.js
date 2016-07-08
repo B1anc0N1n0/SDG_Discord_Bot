@@ -3,6 +3,8 @@ var fs = require( "fs" );
 var path = require( "path" );
 var process = require( "process" );
 
+var winston = require('winston');
+
 var MemeManager = function (bot){
   //initialize cena
   var cenaImageFolder = "./modules/cenaImages/";

@@ -1,3 +1,5 @@
+var winston = require('winston');
+
 var CHOICE = {
     ROCK: "Rock",
     PAPER: "Paper",
